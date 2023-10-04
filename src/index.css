@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+.global {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  column-gap: 2rem;
+  row-gap: 1.5rem;
+  /* text-align: center; */
+}
+
+.global2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 1.5rem;
+}
+
+.home {
+  background-color: #f0f2f5;
+}
+
+.global3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  column-gap: 1.5rem;
+  row-gap: 1.5rem;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-input {
+  padding-left: 30px; /* Adjust this value to match the icon width */
+}
+
+.icon {
+  position: absolute;
+  top: 38%;
+  left: 12px; /* Adjust this value to position the icon as needed */
+  transform: translateY(-50%);
+}
+.loader {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 15%;
+}
+
+.custom-toast-container {
+  width: 50w;
+  margin: auto;
+  /* min-height:80px; */
+  height: auto;
+  background-color: #333;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px;
+}
+
+/* Customize toast notification title */
+.custom-toast-title {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Customize toast notification message */
+.custom-toast-message {
+  font-size: 14px;
+}
+
+.loaderr {
+  width: 100%;
+  height: 100%;
+  display:flex;
+  padding-top: 3rem;
+  justify-content: center;
+  /* border: 2px solid black; */
+
+  /* align-items: center; */
+  
+  /* padding-left: 50%; */
+}
