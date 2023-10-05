@@ -15,7 +15,7 @@ const Watchlist = () => {
   const user = useSelector((state) => state.user.user);
   const watchlist = useSelector((state) => state.watchlist.coins);
   const [loading, setLoading] = useState(false);
-  const [load, setLoad] = useState(false);
+  const [load, setLoad] = useState({});
   useEffect(() => {
     setLoading(true);
     fetchWatchlist();
@@ -53,7 +53,7 @@ const Watchlist = () => {
   };
 
   const handleDelete = async (name, price, id) => {
-    setLoad(true);
+    setLoad((prev)=>({...prev,[id]:true}));
     const options = {
       method: "POST",
       headers: {
@@ -75,14 +75,16 @@ const Watchlist = () => {
 
       if (response.ok) {
         dispatch(deleteFromWatchlist(id));
-        setLoad(false);
+    setLoad((prev)=>({...prev,[id]:false}));
+        
         toast.success("Entry Deleted Successfully", {
           autoClose: 1000,
           className: "custom-toast-container",
           bodyClassName: "custom-toast-message",
         });
       } else {
-        setLoad(false);
+    setLoad((prev)=>({...prev,[id]:false}));
+        
 
         toast.error(data.message || "Unknown error occurred", {
           autoClose: 1000,
@@ -91,7 +93,8 @@ const Watchlist = () => {
         });
       }
     } catch (error) {
-      setLoad(false);
+    setLoad((prev)=>({...prev,[id]:false}));
+      
 
       toast.error(error.message || "Someting Went Wrong...", {
         autoClose: 1000,
@@ -172,7 +175,7 @@ const Watchlist = () => {
                         }
                         disabled={load}
                       >
-                        {load ? (
+                        {load[crypto._id] ? (
                           <>
                             <ThreeDots
                               height="20"
