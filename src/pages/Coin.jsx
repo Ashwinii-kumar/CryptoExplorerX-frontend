@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams , useNavigate} from "react-router-dom";
 import CoinChart from "../components/CoinChart";
 import parse from "html-react-parser";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,8 @@ const Coin = () => {
   const user = useSelector((state) => state.user.user);
   const watchlist = useSelector((state) => state.watchlist.coins);
   const dispatch = useDispatch();
+  const navigate=useNavigate();
+
   const[load,setLoad]=useState(false);
 
   useEffect(() => {
@@ -273,6 +275,9 @@ const Coin = () => {
             )}
               </button>
             )}
+            <button type="button" className="bg-blue-500 px-2 ml-6 py-1 rounded-md"
+            onClick={()=>navigate('/currencies')}
+            >Back</button>
           </div>
 
           <div className="w-[100%] h-[1px] bg-gray-600"></div>

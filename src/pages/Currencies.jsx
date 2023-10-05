@@ -105,7 +105,7 @@ const Currencies = () => {
               name="searched"
               onChange={(e) => setSearched(e.target.value)}
               value={searched}
-              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring focus:border-blue-300 mb-4 pl-10"
+              className="w-full px-4 py-2 border  rounded-md focus:outline-none focus:ring focus:border-blue-300 mb-4 pl-10 text-black"
             />
             <i className="icon">
               <BsSearch className="text-blue-500" />
