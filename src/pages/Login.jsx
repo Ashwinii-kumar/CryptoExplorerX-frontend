@@ -4,6 +4,7 @@ import { login } from "../redux/UserSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ThreeDots } from "react-loader-spinner";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ const Login = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const onChangeHandler = (e) => {
     setFormData((prev) => {
@@ -22,7 +24,17 @@ const Login = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
+    if (!formData.email || !formData.password) {
+      setLoading(false);
+  
+        toast.error("All fields must be set", {
+          autoClose: 1000,
+          className: "custom-toast-container",
+          bodyClassName: "custom-toast-message",
+        });
+        return;
+      }
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -33,7 +45,7 @@ const Login = () => {
     };
 
     try {
-      let response = await fetch(`${apiUrl}/api/v1/login`, options);
+      let response = await fetch(`${apiUrl}/login`, options);
 
       let data = await response.json();
 
@@ -44,7 +56,7 @@ const Login = () => {
         };
         localStorage.setItem("user", JSON.stringify(userAdded));
         dispatch(login({ ...userAdded }));
-
+        setLoading(false);
         toast.success("Login Successful", {
           autoClose: 2000,
           className: "custom-toast-container",
@@ -52,6 +64,7 @@ const Login = () => {
         });
         navigate("/");
       } else {
+        setLoading(false);
         toast.error(data.message || "Unknown error occurred", {
           autoClose: 2000,
           className: "custom-toast-container",
@@ -60,6 +73,8 @@ const Login = () => {
         return;
       }
     } catch (error) {
+      setLoading(false);
+
       toast.error(error.message || "Someting Went Wrong...", {
         autoClose: 2000,
         className: "custom-toast-container",
@@ -114,9 +129,27 @@ const Login = () => {
           </div>
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 w-[100%]"
+            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 w-[100%] flex justify-center"
+            disabled={loading}
           >
-            Login
+            {loading ? (
+              <>
+                <ThreeDots
+                  height="30"
+                  width="60"
+                  radius="9"
+                  color="lightGreen"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={loading}
+                />
+              </>
+            ) : (
+              <>
+                <p>Login</p>
+              </>
+            )}
           </button>
         </form>
       </div>

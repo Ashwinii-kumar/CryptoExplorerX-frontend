@@ -4,7 +4,7 @@ import CoinChart from "../components/CoinChart";
 import parse from "html-react-parser";
 import { useDispatch, useSelector } from "react-redux";
 import { addToWatchList, deleteFromWatchlist } from "../redux/WatclistSlice";
-import { Circles } from "react-loader-spinner";
+import { Circles, ThreeDots } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -17,12 +17,13 @@ const Coin = () => {
   const user = useSelector((state) => state.user.user);
   const watchlist = useSelector((state) => state.watchlist.coins);
   const dispatch = useDispatch();
+  const[load,setLoad]=useState(false);
 
   useEffect(() => {
     if (watchlist.length !== 0) {
       let index = watchlist.findIndex((item) => item.name === id);
       if (index !== -1) {
-        console.log(watchlist[index]);
+        
         setFlag(true);
       } else {
         setFlag(false);
@@ -53,6 +54,7 @@ const Coin = () => {
 
   //add to watchlist
   const onClickHandler = async (e) => {
+    setLoad(true);
     const options = {
       method: "POST",
       headers: {
@@ -67,7 +69,7 @@ const Coin = () => {
 
     try {
       let response = await fetch(
-        `${apiUrl}/api/v1/addToWatchlist/${user.id}`,
+        `${apiUrl}/addToWatchlist/${user.id}`,
         options
       );
 
@@ -80,12 +82,14 @@ const Coin = () => {
         };
         dispatch(addToWatchList(coinToAdd));
         setFlag(true);
+        setLoad(false);
         toast.success("Added To Watchlist", {
           autoClose: 1500,
           className: "custom-toast-container",
           bodyClassName: "custom-toast-message",
         });
       } else {
+        setLoad(false);
         toast.error(dataa.message || "Unknown error occurred", {
           autoClose: 2000,
           className: "custom-toast-container",
@@ -93,6 +97,7 @@ const Coin = () => {
         });
       }
     } catch (error) {
+      setLoad(false);
       toast.error(
         data.message === "token is invalid"
           ? "Login Again"
@@ -108,6 +113,7 @@ const Coin = () => {
 
   //remove from watchlist
   const onRemoveHandler = async (e) => {
+    setLoad(true);
     const options = {
       method: "POST",
       headers: {
@@ -122,7 +128,7 @@ const Coin = () => {
 
     try {
       let response = await fetch(
-        `${apiUrl}/api/v1/deleteFromWatchlist/${user.id}`,
+        `${apiUrl}/deleteFromWatchlist/${user.id}`,
         options
       );
 
@@ -131,12 +137,14 @@ const Coin = () => {
       if (response.ok) {
         dispatch(deleteFromWatchlist(id));
         setFlag(false);
+        setLoad(false);
         toast.success("Removed From Watchlist", {
           autoClose: 1500,
           className: "custom-toast-container",
           bodyClassName: "custom-toast-message",
         });
       } else {
+        setLoad(false);
         toast.error(dataa.message || "Unknown error occurred", {
           autoClose: 2000,
           className: "custom-toast-container",
@@ -144,6 +152,7 @@ const Coin = () => {
         });
       }
     } catch (error) {
+      setLoad(false);
       toast.error(
         data.message === "token is invalid"
           ? "Login Again"
@@ -207,25 +216,61 @@ const Coin = () => {
               <button
                 type="button"
                 onClick={onRemoveHandler}
+                disabled={load}
                 className={
                   user !== null
                     ? "bg-red-700 text-white text-sm font-bold px-4 py-2 rounded-2xl mt-4 mb-8"
                     : "hidden"
                 }
               >
-                Remove From Watchlist
+               {load ? (
+              <>
+                <ThreeDots
+                  height="20"
+                  width="30"
+                  radius="9"
+                  color="white"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={load}
+                />
+              </>
+            ) : (
+              <>
+                <p>Remove From Watchlist</p>
+              </>
+            )}
               </button>
             ) : (
               <button
                 type="button"
                 onClick={onClickHandler}
+                disabled={load}
                 className={
                   user !== null
                     ? "bg-green-700 text-white text-sm font-bold px-4 py-2 rounded-2xl mt-4 mb-8"
                     : "hidden"
                 }
               >
-                Add To WatchList
+                 {load ? (
+              <>
+                <ThreeDots
+                  height="20"
+                  width="30"
+                  radius="9"
+                  color="white"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={load}
+                />
+              </>
+            ) : (
+              <>
+                <p>Add To Watchlist</p>
+              </>
+            )}
               </button>
             )}
           </div>

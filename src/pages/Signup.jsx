@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ThreeDots } from "react-loader-spinner";
+
 
 const validatePassword = (password) => {
   const regexLowercase = /[a-z]/;
@@ -23,6 +25,8 @@ const validatePassword = (password) => {
 
 const Signup = () => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -40,9 +44,22 @@ const Signup = () => {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    if (!formData.email || !formData.password || !formData.cpassword) {
+    setLoading(false);
+
+      toast.error("All fields must be set", {
+        autoClose: 1000,
+        className: "custom-toast-container",
+        bodyClassName: "custom-toast-message",
+      });
+      return;
+    }
 
     let a = validatePassword(formData.password);
     if (a !== "") {
+    setLoading(false);
+
       toast.error(a, {
         autoClose: 1000,
         className: "custom-toast-container",
@@ -52,6 +69,8 @@ const Signup = () => {
     }
 
     if (formData.password !== formData.cpassword) {
+    setLoading(false);
+
       toast.error("Passwords do not match", {
         autoClose: 1000,
         className: "custom-toast-container",
@@ -71,26 +90,34 @@ const Signup = () => {
     };
 
     try {
-      let response = await fetch(`${apiUrl}/api/v1/signup`, options);
+
+      let response = await fetch(`${apiUrl}/signup`, options);
       let data = await response.json();
 
       if (response.ok) {
-        navigate("/login");
+    setLoading(false);
+
         toast.success("Sign Up Successful", {
           autoClose: 1000,
           className: "custom-toast-container",
           bodyClassName: "custom-toast-message",
         });
+        navigate("/login");
+
       } else {
+    setLoading(false);
+
         toast.error(data.message || "Unknown error occurred", {
-          autoClose: 2000,
+          autoClose: 1000,
           className: "custom-toast-container",
           bodyClassName: "custom-toast-message",
         });
       }
     } catch (error) {
+    setLoading(false);
+
       toast.error(error.message || "Someting Went Wrong...", {
-        autoClose: 2000,
+        autoClose: 1000,
         className: "custom-toast-container",
         bodyClassName: "custom-toast-message",
       });
@@ -156,9 +183,27 @@ const Signup = () => {
 
           <button
             type="submit"
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 w-[100%]"
+            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300 w-[100%] flex justify-center"
+            disabled={loading}
           >
-            SignUp
+             {loading ? (
+              <>
+                <ThreeDots
+                  height="30"
+                  width="60"
+                  radius="9"
+                  color="lightGreen"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={loading}
+                />
+              </>
+            ) : (
+              <>
+                <p>SignUp</p>
+              </>
+            )}
           </button>
         </form>
       </div>

@@ -17,11 +17,14 @@ const Navbar = () => {
   const user = useSelector((state) => state.user.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const[load,setLoad]=useState(false);
 
   const onLogoutHandler = (e) => {
+    setLoad(true);
     closeMobileMenu(); 
     dispatch(logout());
     localStorage.removeItem("user");
+    setLoad(false);
     toast.success("You logged out successfully", {
       autoClose: 2000,
       className: "custom-toast-container",
@@ -162,6 +165,7 @@ const Navbar = () => {
             <button
               type="button"
               onClick={onLogoutHandler}
+              disabled={load}
               className={
                 user !== null
                   ? "bg-red-500 text-white text-md rounded-sm font-bold px-2 py-1   sm:text-sm md:w-[100%] sm:w-[25%]  sm:px-2 "
@@ -169,7 +173,24 @@ const Navbar = () => {
               }
               
             >
-              Logout
+              {load ? (
+              <>
+                <ThreeDots
+                  height="30"
+                  width="60"
+                  radius="9"
+                  color="white"
+                  ariaLabel="three-dots-loading"
+                  wrapperStyle={{}}
+                  wrapperClassName=""
+                  visible={load}
+                />
+              </>
+            ) : (
+              <>
+                <p>Logout</p>
+              </>
+            )}
             </button>
           </li>
         </ul>
