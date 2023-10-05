@@ -221,7 +221,7 @@ const Coin = () => {
                 disabled={load}
                 className={
                   user !== null
-                    ? "bg-red-700 text-white text-sm font-bold px-4 py-2 rounded-2xl mt-4 mb-8"
+                    ? "bg-red-700 text-white text-sm font-bold px-4 py-2 rounded-2xl mt-4 mb-2"
                     : "hidden"
                 }
               >
@@ -251,7 +251,7 @@ const Coin = () => {
                 disabled={load}
                 className={
                   user !== null
-                    ? "bg-green-700 text-white text-sm font-bold px-4 py-2 rounded-2xl mt-4 mb-8"
+                    ? "bg-green-700 text-white text-sm font-bold px-4 py-2 rounded-2xl mt-4 mb-2"
                     : "hidden"
                 }
               >
@@ -275,7 +275,7 @@ const Coin = () => {
             )}
               </button>
             )}
-            <button type="button" className="bg-blue-500 px-2 ml-6 py-1 rounded-md"
+            <button type="button" className="bg-blue-500 px-4  py-1 rounded-md block mb-8 mt-2"
             onClick={()=>navigate('/currencies')}
             >Back</button>
           </div>
