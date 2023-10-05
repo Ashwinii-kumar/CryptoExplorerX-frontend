@@ -31,7 +31,7 @@ const Watchlist = () => {
       },
     };
     try {
-      let response = await fetch(`${apiUrl}/getWatchlist/${user.id}`, options);
+      let response = await fetch(`${apiUrl}/api/v1/getWatchlist/${user.id}`, options);
       let data = await response.json();
 
       if (response.ok) {
@@ -67,7 +67,7 @@ const Watchlist = () => {
     };
     try {
       let response = await fetch(
-        `${apiUrl}/deleteFromWatchlist/${user.id}`,
+        `${apiUrl}/api/v1/deleteFromWatchlist/${user.id}`,
         options
       );
 

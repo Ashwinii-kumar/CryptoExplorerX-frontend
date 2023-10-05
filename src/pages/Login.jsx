@@ -45,7 +45,7 @@ const Login = () => {
     };
 
     try {
-      let response = await fetch(`${apiUrl}/login`, options);
+      let response = await fetch(`${apiUrl}/api/v1/login`, options);
 
       let data = await response.json();
 
@@ -65,7 +65,7 @@ const Login = () => {
         navigate("/");
       } else {
         setLoading(false);
-        toast.error(data.message || "Unknown error occurred", {
+        toast.error( "Unknown error occurred", {
           autoClose: 2000,
           className: "custom-toast-container",
           bodyClassName: "custom-toast-message",
@@ -75,7 +75,7 @@ const Login = () => {
     } catch (error) {
       setLoading(false);
 
-      toast.error(error.message || "Someting Went Wrong...", {
+      toast.error( "Someting Went Wrong...", {
         autoClose: 2000,
         className: "custom-toast-container",
         bodyClassName: "custom-toast-message",

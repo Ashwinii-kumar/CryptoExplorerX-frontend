@@ -16,7 +16,43 @@ import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const user = useSelector((state) => state.user.user);
+const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
+  useEffect(()=>{
+  
+    const callServer=async()=>{
+      try {
+        let response=await fetch(`${apiUrl}`);
+        let  data=response.json();
+        if(response.ok){
+          toast.success("Server is up and running...", {
+            autoClose: 1000,
+            className: "custom-toast-container",
+            bodyClassName: "custom-toast-message",
+          });
+        }else{
+          toast.error("Server Connection Failed, Check Your Network", {
+            autoClose: 2000,
+            className: "custom-toast-container",
+            bodyClassName: "custom-toast-message",
+          });
+        }
+
+      } catch (error) {
+        toast.error("Registered User's Services Unavailable,Public Services will Run", {
+          autoClose: 2000,
+          className: "custom-toast-container",
+          bodyClassName: "custom-toast-message",
+        });
+      }
+    }
+   
+   callServer();
+
+
+
+
+  },[])
 
   return (
     <>

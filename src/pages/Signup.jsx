@@ -91,7 +91,7 @@ const Signup = () => {
 
     try {
 
-      let response = await fetch(`${apiUrl}/signup`, options);
+      let response = await fetch(`${apiUrl}/api/v1/signup`, options);
       let data = await response.json();
 
       if (response.ok) {

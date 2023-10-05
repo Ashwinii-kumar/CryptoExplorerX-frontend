@@ -69,7 +69,7 @@ const Coin = () => {
 
     try {
       let response = await fetch(
-        `${apiUrl}/addToWatchlist/${user.id}`,
+        `${apiUrl}/api/v1/addToWatchlist/${user.id}`,
         options
       );
 
@@ -128,7 +128,7 @@ const Coin = () => {
 
     try {
       let response = await fetch(
-        `${apiUrl}/deleteFromWatchlist/${user.id}`,
+        `${apiUrl}/api/v1/deleteFromWatchlist/${user.id}`,
         options
       );
 
