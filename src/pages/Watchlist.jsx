@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { BiSolidNavigation } from "react-icons/bi";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Circles, ThreeDots } from "react-loader-spinner";
 
 const Watchlist = () => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
@@ -14,12 +13,9 @@ const Watchlist = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user.user);
   const watchlist = useSelector((state) => state.watchlist.coins);
-  const [loading, setLoading] = useState(false);
-  const [load, setLoad] = useState({});
+
   useEffect(() => {
-    setLoading(true);
     fetchWatchlist();
-    setLoading(false);
   }, [dispatch]);
 
   const fetchWatchlist = async () => {
@@ -53,7 +49,6 @@ const Watchlist = () => {
   };
 
   const handleDelete = async (name, price, id) => {
-    setLoad((prev)=>({...prev,[id]:true}));
     const options = {
       method: "POST",
       headers: {
@@ -75,17 +70,12 @@ const Watchlist = () => {
 
       if (response.ok) {
         dispatch(deleteFromWatchlist(id));
-    setLoad((prev)=>({...prev,[id]:false}));
-        
         toast.success("Entry Deleted Successfully", {
           autoClose: 1000,
           className: "custom-toast-container",
           bodyClassName: "custom-toast-message",
         });
       } else {
-    setLoad((prev)=>({...prev,[id]:false}));
-        
-
         toast.error(data.message || "Unknown error occurred", {
           autoClose: 1000,
           className: "custom-toast-container",
@@ -93,9 +83,6 @@ const Watchlist = () => {
         });
       }
     } catch (error) {
-    setLoad((prev)=>({...prev,[id]:false}));
-      
-
       toast.error(error.message || "Someting Went Wrong...", {
         autoClose: 1000,
         className: "custom-toast-container",
@@ -103,22 +90,6 @@ const Watchlist = () => {
       });
     }
   };
-
-  if (loading) {
-    return (
-      <>
-        <Circles
-          height="80"
-          width="80"
-          color="#4fa94d"
-          ariaLabel="circles-loading"
-          wrapperStyle={{}}
-          wrapperClass="loader"
-          visible={loading}
-        />
-      </>
-    );
-  }
 
   return (
     <div className="h-[100vh] w-[100vw] flex-col py-10 space-y-8 bg-black">
@@ -173,26 +144,8 @@ const Watchlist = () => {
                         onClick={() =>
                           handleDelete(crypto.name, crypto.price, crypto._id)
                         }
-                        disabled={load}
                       >
-                        {load[crypto._id] ? (
-                          <>
-                            <ThreeDots
-                              height="20"
-                              width="40"
-                              radius="9"
-                              color="red"
-                              ariaLabel="three-dots-loading"
-                              wrapperStyle={{}}
-                              wrapperClassName=""
-                              visible={load}
-                            />
-                          </>
-                        ) : (
-                          <>
-                            <AiFillDelete />
-                          </>
-                        )}
+                        <AiFillDelete />
                       </button>
                     </td>
                     <td className="border px-4 py-2 text-center">
